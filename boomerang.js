@@ -17,7 +17,7 @@
     return obj;
   }
 
-  function on(types, cb) {
+  function on(types, cb, context) {
     var type;
 
     if (!cb) { return this; }
@@ -27,7 +27,7 @@
 
     while (type = types.shift()) {
       this._callbacks[type] = this._callbacks[type] || [];
-      this._callbacks[type].push(cb);
+      this._callbacks[type].push(context ? bindContext(cb, context) : cb);
     }
 
     return this;
@@ -96,4 +96,9 @@
     return nextTickFn;
   }
 
+  function bindContext(fn, context) {
+    return fn.bind ?
+      fn.bind(context) :
+      function() { fn.apply(context, [].slice.call(arguments, 0)); };
+  }
 })(this);
