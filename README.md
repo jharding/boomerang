@@ -2,7 +2,9 @@
 
 Boomerang
 =========
- 
+
+An async event emitter. It can be used to mix in event emitter functionality
+into an arbitrary object, or it can be used as a global event bus.
 
 Download
 --------
