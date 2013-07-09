@@ -3,8 +3,9 @@
 Boomerang
 =========
 
-An async event emitter. It can be used to mix in event emitter functionality
-into an arbitrary object, or it can be used as a global event bus.
+An event emitter that supports calling handlers both synchronously and 
+asynchronously. It can be used to mix in event emitter functionality into an 
+arbitrary object, or it can be used as a global event bus.
 
 Download
 --------
@@ -18,13 +19,19 @@ Usage
 
 #### boomerang.mixin(obj)
 
-Adds the `on`, `off`, and `trigger` methods to `obj`.
+Adds the `onSync`, `onAsync`, `off`, and `trigger` methods to `obj`.
 
-#### boomerang#on(event, callback, context)
+#### boomerang#onSync(event, callback, context)
 
-Binds `callback` to the object. `callback` will be invoked when `event`
-is triggered. If `context` is set, that is the context `callback` will 
-be invoked in.
+Binds `callback` to the object. `callback` will be invoked synchronously
+when `event` is triggered. If `context` is set, that is the context `callback` 
+will be invoked in.
+
+#### boomerang#onAsync(event, callback, context)
+
+Binds `callback` to the object. `callback` will be invoked asynchronously
+when `event` is triggered. If `context` is set, that is the context `callback` 
+will be invoked in.
 
 #### boomerang#off(event)
 
@@ -32,8 +39,10 @@ Removes previously-bound callbacks.
 
 #### boomerang#trigger(event, [,args])
 
-Triggers previously registered callbacks for `event`. Additional
-arguments will be passed to the callbacks when invoked.
+Triggers previously registered callbacks for `event`. Additional arguments 
+will be passed to the callbacks when invoked. Callbacks will be invoked in the 
+order they were attached. If a callback explicitly returns `false`, that will
+stop callback execution.
 
 Example
 -------
@@ -41,7 +50,7 @@ Example
 ```js
 var asyncEventEmitter = boomerang.mixin({}), testVal;
 
-asyncEventEmitter.on('event', callback).trigger('event', 42);
+asyncEventEmitter.onAsync('event', callback).trigger('event', 42);
 
 assert(testVal === undefined);
 setTimeout(function() { assert(testVal === 42); }, 100);

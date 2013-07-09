@@ -1,7 +1,7 @@
 {
   "name": "boomerang",
   "version": "0.1.0",
-  "description": "An async event emitter.",
+  "description": "An event emitter that supports calling handlers both synchronously and asynchronously.",
   "author": {
     "name": "Jake Harding",
     "email": "jacob.s.harding@gmail.com"
